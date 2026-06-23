@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 極速觀賽指南</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto+Condensed:ital,wght=1,700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* 基礎設置與賽車科技風配色 */
+        body {
+            background-color: #0b0b0f; /* 頂級深邃暗黑色 */
+            color: #eee;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.5px;
+            overflow-x: hidden;
+        }
+
+        /* 1. 頂部導覽列 (Navbar) 美化 */
+        .f1-bg-dark {
+            background-color: #0b0b0f !important;
+            border-bottom: 2px solid #e10600; /* F1 官方魂動紅邊框 */
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        .nav-link {
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-left: 15px;
+            transition: color 0.2s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #e10600 !important;
+        }
+
+        /* 2. 首頁大橫幅 (Hero Section) */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(225, 6, 0, 0.35) 0%, rgba(11, 11, 15, 0.85) 70%), 
+                        url('https://media.formula1.com/image/upload/t_16by9South/c_lfill,w_3392/q_auto/v1740000000/trackside-images/2023/F1_Grand_Prix_of_Great_Britain/1533573317.webp') no-repeat center center/cover;
+            color: white;
+            padding: 140px 0;
+            border-bottom: 1px solid rgba(225, 6, 0, 0.2);
+        }
+        .hero-section h1 {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-style: italic;
+            text-transform: uppercase;
+            font-size: 3.5rem;
+            text-shadow: 0 0 15px rgba(225, 6, 0, 0.8);
+            margin-bottom: 20px;
+        }
+        .hero-section p {
+            font-size: 1.25rem;
+            color: #ccc;
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+        .hero-section .btn-danger {
+            background-color: #e10600;
+            border-color: #e10600;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(225, 6, 0, 0.6);
+            transition: all 0.3s ease;
+        }
+        .hero-section .btn-danger:hover {
+            background-color: #b80500;
+            box-shadow: 0 0 25px rgba(225, 6, 0, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* 3. 焦點車隊區標題 */
+        .section-title {
+            color: #e10600;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 2.2rem;
+        }
+
+        /* 4. 核心：卡片毛玻璃與霓虹外框 */
+        .f1-card {
+            background: rgba(21, 21, 30, 0.85); 
+            backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(225, 6, 0, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+        }
+        
+        .f1-card:hover {
+            transform: translateY(-8px); 
+            border-color: #e10600; 
+            box-shadow: 0 0 25px rgba(225, 6, 0, 0.75); 
+        }
+
+        .card-img-custom {
+            height: 230px;
+            object-fit: cover;
+            border-bottom: 2px solid rgba(225, 6, 0, 0.3);
+        }
+
+        .card-body {
+            padding: 1.5rem !important;
+        }
+
+        .card-title {
+            color: white;
+            font-size: 1.35rem;
+            margin-bottom: 12px;
+        }
+
+        .f1-team-desc {
+            color: #cbd5e1 !important; 
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* 車手介紹區塊樣式 */
+        .driver-info-box {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            margin-top: auto; 
+        }
+
+        .driver-title {
+            color: #e10600;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .driver-name {
+            color: #ffffff;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .driver-number {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
+        /* 5. 彈出視窗 (Modal) 紅色發光霓虹外框樣式 */
+        .modal-content-custom {
+            background-color: #111116 !important;
+            border: 2px solid #e10600 !important;
+            box-shadow: 0 0 35px rgba(225, 6, 0, 0.8) !important; /* 滿滿電競速度感紅光 */
+            border-radius: 15px !important;
+        }
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .driver-img {
+            width: 100%;
+            max-height: 260px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.6));
+        }
+        .driver-bio {
+            font-size: 0.85rem;
+            color: #a1a1aa;
+            line-height: 1.4;
+            margin-top: 8px;
+            text-align: left;
+            padding: 0 10px;
+        }
+
+        /* 賽事日程表格客製化樣式 */
+        .f1-table {
+            color: #eee !important;
+            vertical-align: middle;
+        }
+        .f1-table th {
+            color: #e10600 !important;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-bottom: 2px solid rgba(225, 6, 0, 0.4) !important;
+        }
+        .f1-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+
+        /* 6. 2026 LIVE 積分榜客製化樣式 */
+        .f1-leaderboard-box {
+            background: rgba(21, 21, 30, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .f1-leaderboard-box:hover {
+            border-color: #e10600;
+            box-shadow: 0 0 25px rgba(225, 6, 0, 0.4);
+        }
+
+        .leaderboard-title-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(225, 6, 0, 0.4);
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        .driver-rank-card {
+            background: rgba(11, 11, 15, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .driver-rank-card.active-highlight {
+            border-color: #e10600;
+            box-shadow: 0 0 15px rgba(225, 6, 0, 0.5);
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        .rank-badge.top-1 { background-color: #e10600; }
+        .rank-badge.top-2 { background-color: #6c757d; }
+        .rank-badge.top-3 { background-color: #b07d62; }
+
+        .leaderboard-driver-img {
+            width: 100%;
+            height: 140px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.5));
+            margin-bottom: 12px;
+        }
+
+        /* 7. 頁尾美化 */
+        footer {
+            background-color: #060609;
+            border-top: 1px solid rgba(225, 6, 0, 0.3);
+            font-size: 0.9rem;
+            color: #777;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark f1-bg-dark">
+        <div class="container">
+            <a class="navbar-brand text-danger fw-bold" href="#">🏁 F1 SPEED</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">熱門車隊</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">觀賽焦點</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold">EXPERIENCE THE RUSH OF 350 KM/H</h1>
+            <p class="lead">最熱血的賽車運動，今晚，你想為哪一個車隊歡呼？</p>
+            <button class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#scheduleModal">2026 賽事日程與地點資訊</button>
+        </div>
+    </header>
+
+    <main class="container my-5">
+        
+        <div class="f1-leaderboard-box">
+            <div class="leaderboard-title-area">
+                <h3 class="m-0 fw-bold text-white" style="font-style: italic; font-size: 1.6rem;">
+                    🏆 2026 LIVE 車手積分臨時排行榜 (TOP 5)
+                </h3>
+                <span class="text-secondary small">更新於：2026/06/23 | 開幕前夕預估陣容</span>
+            </div>
+            
+            <div class="row g-3 text-center">
+                <div class="col">
+                    <div class="driver-rank-card h-100">
+                        <span class="rank-badge top-1">1</span>
+                        <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png" class="leaderboard-driver-img" alt="Lewis Hamilton">
+                        <h5 class="fw-bold mb-1 text-white">K. Antonelli</h5>
+                        <p class="text-secondary small mb-2">Mercedes</p>
+                        <h4 class="text-danger fw-bold m-0" style="font-family: 'Roboto Condensed', sans-serif;">156 PTS</h4>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="driver-rank-card h-100">
+                        <span class="rank-badge top-2">2</span>
+                        <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png" class="leaderboard-driver-img" alt="Lewis Hamilton">
+                        <h5 class="fw-bold mb-1 text-white">L. Hamilton</h5>
+                        <p class="text-secondary small mb-2">Ferrari</p>
+                        <h4 class="text-danger fw-bold m-0" style="font-family: 'Roboto Condensed', sans-serif;">115 PTS</h4>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="driver-rank-card h-100">
+                        <span class="rank-badge top-3">3</span>
+                        <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png" class="leaderboard-driver-img" alt="George Russell">
+                        <h5 class="fw-bold mb-1 text-white">G. Russell</h5>
+                        <p class="text-secondary small mb-2">Mercedes</p>
+                        <h4 class="text-danger fw-bold m-0" style="font-family: 'Roboto Condensed', sans-serif;">106 PTS</h4>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="driver-rank-card h-100">
+                        <span class="rank-badge">4</span>
+                        <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png" class="leaderboard-driver-img" alt="Charles Leclerc">
+                        <h5 class="fw-bold mb-1 text-white">C. Leclerc</h5>
+                        <p class="text-secondary small mb-2">Ferrari</p>
+                        <h4 class="text-danger fw-bold m-0" style="font-family: 'Roboto Condensed', sans-serif;">75 PTS</h4>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="driver-rank-card h-100">
+                        <span class="rank-badge">5</span>
+                        <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LANNDO01_Lando_Norris/lanndo01.png" class="leaderboard-driver-img" alt="Lando Norris">
+                        <h5 class="fw-bold mb-1 text-white">L. Norris</h5>
+                        <p class="text-secondary small mb-2">McLaren</p>
+                        <h4 class="text-danger fw-bold m-0" style="font-family: 'Roboto Condensed', sans-serif;">73 PTS</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-center mb-5 fw-bold section-title">🔥 THIS SEASON'S TOP TEAMS</h2>
+        
+        <div class="row g-4">
+            
+            <div class="col-xl-3 col-md-6 col-sm-12">
+                <div class="f1-card h-100 d-flex flex-column" data-bs-toggle="modal" data-bs-target="#redbullModal">
+                    <img src="https://s.yimg.com/ny/api/res/1.2/8mzgD3BCuyYIFqia6U43uA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MA--/https://media.zenfs.com/ko/ftvn.com.tw/97ff97eb66597db94aa3cf67d56384a0" class="card-img-top card-img-custom" alt="Red Bull Racing">
+                    <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title fw-bold">Red Bull Racing (紅牛)</h5>
+                        <p class="f1-team-desc">目前賽場上的頂級火星車隊，以極致的空力設計和狂暴的賽道策略著稱。</p>
+                        
+                        <div class="driver-info-box">
+                            <div class="driver-title">隊賽車手 LINEUP</div>
+                            <div class="driver-name">
+                                <span>Max Verstappen</span>
+                                <span class="driver-number">#1</span>
+                            </div>
+                            <div class="driver-name">
+                                <span>Sergio Pérez</span>
+                                <span class="driver-number">#11</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-sm-12">
+                <div class="f1-card h-100 d-flex flex-column" data-bs-toggle="modal" data-bs-target="#ferrariModal">
+                    <img src="https://photo.8891.com.tw/nc/newcar/article/2023/02/16/1676544008190661_1400_0.jpg" class="card-img-top card-img-custom" alt="Scuderia Ferrari">
+                    <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title fw-bold">Scuderia Ferrari (法拉利)</h5>
+                        <p class="f1-team-desc">歷史最悠久、最輝煌的義式紅軍，那一抹純粹的經典紅是全世界車迷的信仰。</p>
+                        
+                        <div class="driver-info-box">
+                            <div class="driver-title">隊賽車手 LINEUP</div>
+                            <div class="driver-name">
+                                <span>Charles Leclerc</span>
+                                <span class="driver-number">#16</span>
+                            </div>
+                            <div class="driver-name">
+                                <span>Lewis Hamilton</span>
+                                <span class="driver-number">#44</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-sm-12">
+                <div class="f1-card h-100 d-flex flex-column" data-bs-toggle="modal" data-bs-target="#mercModal">
+                    <img src="https://racingnewstoday.com/wp-content/uploads/2026/01/M560070-kopie.webp" class="card-img-top card-img-custom" alt="Mercedes-AMG">
+                    <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title fw-bold">Mercedes-AMG (梅奔)</h5>
+                        <p class="f1-team-desc">傳奇的銀箭軍團，憑藉精準的工藝與極致技術，曾締造史無前例的八連霸王朝。</p>
+                        
+                        <div class="driver-info-box">
+                            <div class="driver-title">隊賽車手 LINEUP</div>
+                            <div class="driver-name">
+                                <span>George Russell</span>
+                                <span class="driver-number">#63</span>
+                            </div>
+                            <div class="driver-name">
+                                <span>Kimi Antonelli</span>
+                                <span class="driver-number">#12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 col-sm-12">
+                <div class="f1-card h-100 d-flex flex-column" data-bs-toggle="modal" data-bs-target="#mclarenModal">
+                    <img src="https://cars-asset.tvbs.com.tw/uploads/2025/07/04233936/20250705_McLaren-reveal-chrome-livery-for-Silverstone-1.jpg" class="card-img-top card-img-custom" alt="McLaren F1 Team">
+                    <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title fw-bold">McLaren F1 Team (麥拉倫)</h5>
+                        <p class="f1-team-desc">近年強勢崛起的木瓜橘風暴，憑藉無比犀利的賽車升級與新生代衝勁成為頂尖豪強。</p>
+                        
+                        <div class="driver-info-box">
+                            <div class="driver-title">隊賽車手 LINEUP</div>
+                            <div class="driver-name">
+                                <span>Lando Norris</span>
+                                <span class="driver-number">#4</span>
+                            </div>
+                            <div class="driver-name">
+                                <span>Oscar Piastri</span>
+                                <span class="driver-number">#81</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="modal fade" id="scheduleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-custom text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-danger">📅 2026 F1 官方完整賽事日程表</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="table-responsive" style="max-height: 450px; overflow-y: auto; padding-right: 5px;">
+                        <style>
+                            #scheduleModal .table-responsive::-webkit-scrollbar { width: 6px; }
+                            #scheduleModal .table-responsive::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+                            #scheduleModal .table-responsive::-webkit-scrollbar-thumb { background: #e10600; border-radius: 10px; box-shadow: 0 0 10px rgba(225, 6, 0, 0.5); }
+                            #scheduleModal .table-responsive::-webkit-scrollbar-thumb:hover { background: #ff2e26; }
+                        </style>
+                        <table class="table table-dark table-hover f1-table mb-0">
+                            <thead style="position: sticky; top: 0; background-color: #111116; z-index: 2;">
+                                <tr>
+                                    <th scope="col">站次</th>
+                                    <th scope="col">大獎賽 (Grand Prix)</th>
+                                    <th scope="col">舉辦賽道 / 地點</th>
+                                    <th scope="col">日期 (2026)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>第 1 站</td><td>澳洲大獎賽</td><td>墨爾本阿爾伯特公園賽道</td><td>03/13 - 03/15</td></tr>
+                                <tr><td>第 2 站</td><td>中國大獎賽</td><td>上海國際賽車場</td><td>03/20 - 03/22</td></tr>
+                                <tr><td>第 3 站</td><td>日本大獎賽</td><td>鈴鹿賽道</td><td>04/03 - 04/05</td></tr>
+                                <tr><td>第 4 站</td><td>巴林大獎賽</td><td>薩基爾國際賽車場</td><td>04/17 - 04/19</td></tr>
+                                <tr><td>第 5 站</td><td>沙烏地阿拉伯大獎賽</td><td>吉達濱海賽道</td><td>04/24 - 04/26</td></tr>
+                                <tr><td>第 6 站</td><td>邁阿密大獎賽</td><td>邁阿密國際賽道</td><td>05/01 - 05/03</td></tr>
+                                <tr><td>第 7 站</td><td>摩納哥大獎賽</td><td>蒙地卡羅賽道</td><td>05/22 - 05/24</td></tr>
+                                <tr><td>第 8 站</td><td>西班牙大獎賽</td><td>巴塞隆納-加泰隆尼亞賽道</td><td>05/29 - 05/31</td></tr>
+                                <tr><td>第 9 站</td><td>加拿大大獎賽</td><td>滿地可吉爾·維倫紐夫賽道</td><td>06/12 - 06/14</td></tr>
+                                <tr><td>第 10 站</td><td>奧地利大獎賽</td><td>紅牛環賽道 (Red Bull Ring)</td><td>06/26 - 06/28</td></tr>
+                                <tr><td>第 11 站</td><td>英國大獎賽</td><td>銀石賽道 (Silverstone)</td><td>07/03 - 07/05</td></tr>
+                                <tr><td>第 12 站</td><td>比利時大獎賽</td><td>斯帕-弗朗科爾尚賽道</td><td>07/24 - 07/26</td></tr>
+                                <tr><td>第 13 站</td><td>匈牙利大獎賽</td><td>亨格羅林賽道</td><td>07/31 - 08/02</td></tr>
+                                <tr><td>第 14 站</td><td>荷蘭大獎賽</td><td>贊德福特賽道</td><td>08/28 - 08/30</td></tr>
+                                <tr><td>第 15 站</td><td>義大利大獎賽</td><td>蒙札國家賽車場</td><td>09/04 - 09/06</td></tr>
+                                <tr><td>第 16 站</td><td>亞塞拜然大獎賽</td><td>巴庫市街賽道</td><td>09/18 - 09/20</td></tr>
+                                <tr><td>第 17 站</td><td>新加坡大獎賽</td><td>濱海灣市街賽道</td><td>10/02 - 10/04</td></tr>
+                                <tr><td>第 18 站</td><td>美國大獎賽</td><td>美洲賽道 (COTA)</td><td>10/16 - 10/18</td></tr>
+                                <tr><td>第 19 站</td><td>墨西哥大獎賽</td><td>羅德里格斯兄弟賽道</td><td>10/23 - 10/25</td></tr>
+                                <tr><td>第 20 站</td><td>聖保羅大獎賽</td><td>英特拉格斯賽道</td><td>11/06 - 11/08</td></tr>
+                                <tr><td>第 21 站</td><td>拉斯維加斯大獎賽</td><td>拉斯維加斯市街賽道</td><td>11/19 - 11/21</td></tr>
+                                <tr><td>第 22 站</td><td>卡達大獎賽</td><td>盧賽爾國際賽車場</td><td>11/27 - 11/29</td></tr>
+                                <tr><td>終點站</td><td>阿布達比大獎賽</td><td>亞斯碼頭賽道</td><td>12/04 - 12/06</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-end mt-3 text-secondary small">
+                        * 日期皆為官方預定之大獎賽週末（自由練習、排位賽與正賽）。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="redbullModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-custom text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-danger">🏁 RED BULL RACING LINEUP</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center">
+                        <div class="col-6 border-end border-secondary">
+                            <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png" class="driver-img mb-2">
+                            <h4 class="fw-bold mb-1">Max Verstappen</h4>
+                            <p class="text-danger fw-bold mb-2">No. 1</p>
+                            <p class="driver-bio">荷蘭籍的三屆世界冠軍，以極具侵略性的駕駛風格和無懈可擊的穩定度統治賽道。</p>
+                        </div>
+                        <div class="col-6">
+                            <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/S/SERPER01_Sergio_Perez/serper01.png" class="driver-img mb-2">
+                            <h4 class="fw-bold mb-1">Sergio Pérez</h4>
+                            <p class="text-danger fw-bold mb-2">No. 11</p>
+                            <p class="driver-bio">墨西哥名將，具備頂尖的輪胎管理能力，是車隊穩固積分與戰術支援的關鍵支柱。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ferrariModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-custom text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-danger">🏁 SCUDERIA FERRARI LINEUP</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center">
+                        <div class="col-6 border-end border-secondary">
+                            <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png" class="driver-img mb-2">
+                            <h4 class="fw-bold mb-1">Charles Leclerc</h4>
+                            <p class="text-danger fw-bold mb-2">No. 16</p>
+                            <p class="driver-bio">摩納哥少主，擁有驚人的單圈排位賽爆發力，承載著無數躍馬車迷的奪冠希望。</p>
+                        </div>
+                        <div class="col-6">
+                            <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png" class="driver-img mb-2">
+                            <h4 class="fw-bold mb-1">Lewis Hamilton</h4>
+                            <p class="text-danger fw-bold mb-2">No. 44</p>
+                            <p class="driver-bio">七屆世界冠軍，歷史上最偉大的車手之一。正式加盟紅軍，寫下賽車史全新傳奇篇章。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mercModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-custom text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-danger">🏁 MERCEDES-AMG LINEUP</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center">
+                        <div class="col-6 border-end border-secondary">
+                            <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png" class="driver-img mb-2">
+                            <h4 class="fw-bold mb-1">George Russell</h4>
+                            <p class="text-danger fw-bold mb-2">No. 63</p>
+                            <p class="driver-bio">英國中生代好手，駕駛風格冷靜且沉著，正式接下銀箭軍團頭號車手的大旗。</p>
+                        </div>
+                        <div class="col-6">
+                            <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/K/KIMANT01_Kimi_Antonelli/kimant01.png" class="driver-img mb-2">
+                            <h4 class="fw-bold mb-1">Kimi Antonelli</h4>
+                            <p class="text-danger fw-bold mb-2">No. 12</p>
+                            <p class="driver-bio">備受矚目的義大利超級超新星，頂尖天賦獲得梅奔青睞，首度挑戰最高殿堂。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mclarenModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content modal-content-custom text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-danger">🏁 MCLAREN F1 LINEUP</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row text-center">
+                        <div class="col-6 border-end border-secondary">
+                            <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LANNDO01_Lando_Norris/lanndo01.png" class="driver-img mb-2">
+                            <h4 class="fw-bold mb-1">Lando Norris</h4>
+                            <p class="text-danger fw-bold mb-2">No. 4</p>
+                            <p class="driver-bio">實力與人氣兼具的英國車手，近年速度大幅進化，已成為爭奪世界冠軍的頭號勁敵。</p>
+                        </div>
+                        <div class="col-6">
+                            <img src="https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png" class="driver-img mb-2">
+                            <h4 class="fw-bold mb-1">Oscar Piastri</h4>
+                            <p class="text-danger fw-bold mb-2">No. 81</p>
+                            <p class="driver-bio">澳洲天才新星，二年級生即展現出超越年齡的超群心理素質與頂級賽道速度。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white text-center py-4 mt-5">
+        <p class="mb-0" style="letter-spacing: 1px;">&copy; 2026 F1 RWD 網頁設計作業. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
